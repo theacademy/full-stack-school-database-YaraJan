@@ -102,6 +102,7 @@ public class StudentServiceImpl implements StudentServiceInterface {
         Student student = getStudentById(studentId);
         Course course = courseDao.findCourseById(courseId);
 
+        //only deletes student from course if student or course exists
         if(student.getStudentFirstName().equals("Student Not Found")) {
             System.out.println("Student not found");
         } else if(course.getCourseName().equals("Course Not Found")) {
@@ -120,6 +121,7 @@ public class StudentServiceImpl implements StudentServiceInterface {
         Student student = getStudentById(studentId);
         Course course = courseDao.findCourseById(courseId);
 
+        //only adds student if student and course exists
         if(student.getStudentFirstName().equals("Student Not Found")) {
             System.out.println("Student not found");
         } else if(course.getCourseName().equals("Course Not Found")) {
