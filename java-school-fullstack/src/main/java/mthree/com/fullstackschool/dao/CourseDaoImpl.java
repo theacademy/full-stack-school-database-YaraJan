@@ -22,8 +22,11 @@ public class CourseDaoImpl implements CourseDao {
     public Course createNewCourse(Course course) {
         //YOUR CODE STARTS HERE
 
+        final String INSERT_COURSE = "INSERT INTO course (courseCode, courseDesc, teacherId) " +
+                "values (?, ?, ?)";
+        jdbcTemplate.update(INSERT_COURSE, course.getCourseName(), course.getCourseDesc(), course.getTeacherId());
 
-        return null;
+        return course;
 
         //YOUR CODE ENDS HERE
     }
@@ -32,8 +35,8 @@ public class CourseDaoImpl implements CourseDao {
     public List<Course> getAllCourses() {
         //YOUR CODE STARTS HERE
 
-
-        return null;
+        final String SELECT_ALL_COURSES = "SELECT * from course";
+        return jdbcTemplate.query(SELECT_ALL_COURSES, new CourseMapper());
 
         //YOUR CODE ENDS HERE
     }
@@ -42,7 +45,9 @@ public class CourseDaoImpl implements CourseDao {
     public Course findCourseById(int id) {
         //YOUR CODE STARTS HERE
 
-        return null;
+        final String SELECT_COURSE_BY_ID = "SELECT * from course " +
+                "where cid = ?";
+        return jdbcTemplate.queryForObject(SELECT_COURSE_BY_ID, new CourseMapper(), id);
 
         //YOUR CODE ENDS HERE
     }
@@ -51,7 +56,9 @@ public class CourseDaoImpl implements CourseDao {
     public void updateCourse(Course course) {
         //YOUR CODE STARTS HERE
 
-
+        final String UPDATE_COURSE = "UPDATE course set courseCode = ?, courseDesc = ?, " +
+                "teacherId = ? where cid = ?";
+        jdbcTemplate.update(UPDATE_COURSE, course.getCourseName(), course.getCourseDesc(), course.getTeacherId(), course.getCourseId());
 
         //YOUR CODE ENDS HERE
     }
@@ -60,7 +67,11 @@ public class CourseDaoImpl implements CourseDao {
     public void deleteCourse(int id) {
         //YOUR CODE STARTS HERE
 
+        //deletes any foreign key references from course_student table
+        deleteAllStudentsFromCourse(id);
 
+        final String DELETE_COURSE = "DELETE from course where cid = ?";
+        jdbcTemplate.update(DELETE_COURSE, id);
 
         //YOUR CODE ENDS HERE
     }
@@ -69,7 +80,8 @@ public class CourseDaoImpl implements CourseDao {
     public void deleteAllStudentsFromCourse(int courseId) {
         //YOUR CODE STARTS HERE
 
-
+        final String DELETE_ALL_STUDENTS_COURSE = "Delete from course_student where course_id = ?";
+        jdbcTemplate.update(DELETE_ALL_STUDENTS_COURSE, courseId);
 
         //YOUR CODE ENDS HERE
     }
